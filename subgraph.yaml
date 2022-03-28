@@ -1,0 +1,110 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: sOlympusERC20V3
+    network: matic
+    source:
+      address: '0xe3CDAB60de5522CF016fA8C8d03a32CCBc636bAf'
+      abi: sOlympusERC20V3
+      startBlock: 25303276
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Transaction
+        - ProtocolMetric
+        - Approval
+        - LogRebase
+        - LogStakingContractUpdated
+        - Transfer
+      abis:
+        - name: sOlympusERC20V3
+          file: ./abis/sOlympusERC20V3.json
+        # -- ProtocolMetric --
+        - name: OlympusStakingV3
+          file: ./abis/OlympusStakingV3.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: UniswapV3Pair
+          file: ./abis/UniswapV3Pair.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: BondingCalculator
+          file: ./abis/BondingCalculator.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: MasterChef
+          file: ./abis/MasterChef.json
+        - name: Distributor
+          file: ./abis/Distributor.json
+        # --------------------
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: LogRebase(indexed uint256,uint256,uint256)
+          handler: handleLogRebase
+        - event: LogStakingContractUpdated(address)
+          handler: handleLogStakingContractUpdated
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/sOlympusERC20V3.ts
+######################################################
+  - kind: ethereum/contract
+    name: OlympusTreasury
+    network: matic
+    source:
+      address: '0x6DE53D1e3553037587F4e1889Fde6371Cf913342'
+      abi: OlympusTreasury
+      startBlock: 25303276
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Transaction
+        - ProtocolMetric
+        - CreateDebt
+        - Deposit
+        - RepayDebt
+        - ReservesAudited
+        - Withdrawal
+      abis:
+        - name: OlympusTreasury
+          file: ./abis/OlympusTreasury.json
+        # -- ProtocolMetric --
+        - name: sOlympusERC20V3
+          file: ./abis/sOlympusERC20V3.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: UniswapV3Pair
+          file: ./abis/UniswapV3Pair.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: BondingCalculator
+          file: ./abis/BondingCalculator.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: MasterChef
+          file: ./abis/MasterChef.json
+        - name: Distributor
+          file: ./abis/Distributor.json
+        # --------------------
+      eventHandlers:
+        - event: CreateDebt(indexed address,indexed address,uint256,uint256)
+          handler: handleCreateDebt
+        - event: Deposit(indexed address,uint256,uint256)
+          handler: handleDeposit
+        - event: RepayDebt(indexed address,indexed address,uint256,uint256)
+          handler: handleRepayDebt
+        - event: ReservesAudited(indexed uint256)
+          handler: handleReservesAudited
+        - event: Withdrawal(indexed address,uint256,uint256)
+          handler: handleWithdrawal
+      file: ./src/OlympusTreasury.ts

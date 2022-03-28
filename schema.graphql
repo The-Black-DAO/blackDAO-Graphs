@@ -1,0 +1,134 @@
+type Transaction @entity {
+  id: ID!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  blockHash: Bytes!
+  from: Bytes!
+  to: Bytes
+  value: BigInt!
+  gasPrice: BigInt!
+}
+
+type Approval @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  owner: Bytes! # address
+  spender: Bytes! # address
+  value: BigInt! # uint256
+}
+
+type LogRebase @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  epoch: BigInt! # uint256
+  rebase: BigInt! # uint256
+  index: BigInt! # uint256
+}
+
+type LogStakingContractUpdated @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  stakingContract: Bytes! # address
+}
+
+type Transfer @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  from: Bytes! # address
+  to: Bytes! # address
+  value: BigInt! # uint256
+}
+
+type CreateDebt @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  debtor: Bytes! # address
+  token: Bytes! # address
+  amount: BigInt! # uint256
+  value: BigInt! # uint256
+}
+
+type Deposit @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  token: Bytes! # address
+  amount: BigInt! # uint256
+  value: BigInt! # uint256
+}
+
+type RepayDebt @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  debtor: Bytes! # address
+  token: Bytes! # address
+  amount: BigInt! # uint256
+  value: BigInt! # uint256
+}
+
+type ReservesAudited @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  totalReserves: BigInt! # uint256
+}
+
+type Withdrawal @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  token: Bytes! # address
+  amount: BigInt! # uint256
+  value: BigInt! # uint256
+}
+
+type DailyStakingReward @entity {
+  id: ID!
+  timestamp: BigInt!
+  amount: BigDecimal!
+  value: BigDecimal!
+}
+
+type ProtocolMetric @entity {
+  id: ID!
+  timestamp: BigInt!
+  ohmCirculatingSupply: BigDecimal!
+  sOhmCirculatingSupply: BigDecimal!
+  totalSupply: BigDecimal!
+  ohmPrice: BigDecimal!
+  marketCap: BigDecimal!
+  totalValueLocked: BigDecimal!
+  treasuryRiskFreeValue: BigDecimal!
+  treasuryMarketValue: BigDecimal!
+  nextEpochRebase: BigDecimal!
+  nextDistributedOhm: BigDecimal!
+  treasuryDaiRiskFreeValue: BigDecimal!
+  treasuryFraxRiskFreeValue: BigDecimal!
+  treasuryWETHRiskFreeValue: BigDecimal!
+  treasuryDaiMarketValue: BigDecimal!
+  treasuryFraxMarketValue: BigDecimal!
+  treasuryWETHMarketValue: BigDecimal!
+  treasuryLPValue: BigDecimal!
+  treasuryStableBacking: BigDecimal!
+  treasuryVolatileBacking: BigDecimal!
+  treasuryTotalBacking: BigDecimal!
+  currentAPY: BigDecimal!
+  runway2dot5k: BigDecimal
+  runway5k: BigDecimal
+  runway7dot5k: BigDecimal
+  runway10k: BigDecimal
+  runway20k: BigDecimal
+  runway50k: BigDecimal
+  runway70k: BigDecimal
+  runway100k: BigDecimal
+  runwayCurrent: BigDecimal
+  treasuryOhmDaiPOL: BigDecimal!
+  treasuryOhmFraxPOL: BigDecimal!
+  treasuryOhmEthPOL: BigDecimal!
+}
