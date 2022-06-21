@@ -64,7 +64,7 @@ export class WarmupSet__Params {
   }
 }
 
-export class OlympusStakingV3__epochResult {
+export class BlackDaoStakingV3__epochResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -87,7 +87,7 @@ export class OlympusStakingV3__epochResult {
   }
 }
 
-export class OlympusStakingV3__warmupInfoResult {
+export class BlackDaoStakingV3__warmupInfoResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -110,19 +110,19 @@ export class OlympusStakingV3__warmupInfoResult {
   }
 }
 
-export class OlympusStakingV3 extends ethereum.SmartContract {
-  static bind(address: Address): OlympusStakingV3 {
-    return new OlympusStakingV3("OlympusStakingV3", address);
+export class BlackDaoStakingV3 extends ethereum.SmartContract {
+  static bind(address: Address): BlackDaoStakingV3 {
+    return new BlackDaoStakingV3("BlackDaoStakingV3", address);
   }
 
-  OHM(): Address {
-    let result = super.call("OHM", "OHM():(address)", []);
+  BLKD(): Address {
+    let result = super.call("BLKD", "BLKD():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_OHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("OHM", "OHM():(address)", []);
+  try_BLKD(): ethereum.CallResult<Address> {
+    let result = super.tryCall("BLKD", "BLKD():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -181,14 +181,14 @@ export class OlympusStakingV3 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  epoch(): OlympusStakingV3__epochResult {
+  epoch(): BlackDaoStakingV3__epochResult {
     let result = super.call(
       "epoch",
       "epoch():(uint256,uint256,uint256,uint256)",
       []
     );
 
-    return new OlympusStakingV3__epochResult(
+    return new BlackDaoStakingV3__epochResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -196,7 +196,7 @@ export class OlympusStakingV3 extends ethereum.SmartContract {
     );
   }
 
-  try_epoch(): ethereum.CallResult<OlympusStakingV3__epochResult> {
+  try_epoch(): ethereum.CallResult<BlackDaoStakingV3__epochResult> {
     let result = super.tryCall(
       "epoch",
       "epoch():(uint256,uint256,uint256,uint256)",
@@ -207,7 +207,7 @@ export class OlympusStakingV3 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new OlympusStakingV3__epochResult(
+      new BlackDaoStakingV3__epochResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt(),
@@ -231,14 +231,14 @@ export class OlympusStakingV3 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  gOHM(): Address {
-    let result = super.call("gOHM", "gOHM():(address)", []);
+  gBLKD(): Address {
+    let result = super.call("gBLKD", "gBLKD():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_gOHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("gOHM", "gOHM():(address)", []);
+  try_gBLKD(): ethereum.CallResult<Address> {
+    let result = super.tryCall("gBLKD", "gBLKD():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -276,14 +276,14 @@ export class OlympusStakingV3 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  sOHM(): Address {
-    let result = super.call("sOHM", "sOHM():(address)", []);
+  sBLKD(): Address {
+    let result = super.call("sBLKD", "sBLKD():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_sOHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("sOHM", "sOHM():(address)", []);
+  try_sBLKD(): ethereum.CallResult<Address> {
+    let result = super.tryCall("sBLKD", "sBLKD():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -440,14 +440,14 @@ export class OlympusStakingV3 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  warmupInfo(param0: Address): OlympusStakingV3__warmupInfoResult {
+  warmupInfo(param0: Address): BlackDaoStakingV3__warmupInfoResult {
     let result = super.call(
       "warmupInfo",
       "warmupInfo(address):(uint256,uint256,uint256,bool)",
       [ethereum.Value.fromAddress(param0)]
     );
 
-    return new OlympusStakingV3__warmupInfoResult(
+    return new BlackDaoStakingV3__warmupInfoResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -457,7 +457,7 @@ export class OlympusStakingV3 extends ethereum.SmartContract {
 
   try_warmupInfo(
     param0: Address
-  ): ethereum.CallResult<OlympusStakingV3__warmupInfoResult> {
+  ): ethereum.CallResult<BlackDaoStakingV3__warmupInfoResult> {
     let result = super.tryCall(
       "warmupInfo",
       "warmupInfo(address):(uint256,uint256,uint256,bool)",
@@ -468,7 +468,7 @@ export class OlympusStakingV3 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new OlympusStakingV3__warmupInfoResult(
+      new BlackDaoStakingV3__warmupInfoResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt(),
@@ -531,15 +531,15 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _ohm(): Address {
+  get _blkd(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _sOHM(): Address {
+  get _sBLKD(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get _gOHM(): Address {
+  get _gBLKD(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 

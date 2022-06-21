@@ -4,11 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ blkd",
-    "create-local": "graph create --node http://pokt.drondin.xyz:18020/ blkd",
-    "remove-local": "graph remove --node http://pokt.drondin.xyz:18020/ blkd",
-    "deploy-local": "graph deploy --node http://pokt.drondin.xyz:18020/ --ipfs http://pokt.drondin.xyz:15001 blkd",
-    "deploy-hosted": "graph deploy --product hosted-service wasif28/Matic1"
+    "deploy-hosted": "graph deploy --product hosted-service wasif28/Black-Dao"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.27.0",

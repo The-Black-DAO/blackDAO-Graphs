@@ -128,7 +128,7 @@ export class Transfer__Params {
   }
 }
 
-export class sOlympusERC20V3__rebasesResult {
+export class sBlackDaoERC20V3__rebasesResult {
   value0: BigInt;
   value1: BigInt;
   value2: BigInt;
@@ -168,9 +168,9 @@ export class sOlympusERC20V3__rebasesResult {
   }
 }
 
-export class sOlympusERC20V3 extends ethereum.SmartContract {
-  static bind(address: Address): sOlympusERC20V3 {
-    return new sOlympusERC20V3("sOlympusERC20V3", address);
+export class sBlackDaoERC20V3 extends ethereum.SmartContract {
+  static bind(address: Address): sBlackDaoERC20V3 {
+    return new sBlackDaoERC20V3("sBlackDaoERC20V3", address);
   }
 
   DOMAIN_SEPARATOR(): Bytes {
@@ -395,14 +395,14 @@ export class sOlympusERC20V3 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  gOHM(): Address {
-    let result = super.call("gOHM", "gOHM():(address)", []);
+  gBLKD(): Address {
+    let result = super.call("gBLKD", "gBLKD():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_gOHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("gOHM", "gOHM():(address)", []);
+  try_gBLKD(): ethereum.CallResult<Address> {
+    let result = super.tryCall("gBLKD", "gBLKD():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -535,14 +535,14 @@ export class sOlympusERC20V3 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  rebases(param0: BigInt): sOlympusERC20V3__rebasesResult {
+  rebases(param0: BigInt): sBlackDaoERC20V3__rebasesResult {
     let result = super.call(
       "rebases",
       "rebases(uint256):(uint256,uint256,uint256,uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
-    return new sOlympusERC20V3__rebasesResult(
+    return new sBlackDaoERC20V3__rebasesResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -555,7 +555,7 @@ export class sOlympusERC20V3 extends ethereum.SmartContract {
 
   try_rebases(
     param0: BigInt
-  ): ethereum.CallResult<sOlympusERC20V3__rebasesResult> {
+  ): ethereum.CallResult<sBlackDaoERC20V3__rebasesResult> {
     let result = super.tryCall(
       "rebases",
       "rebases(uint256):(uint256,uint256,uint256,uint256,uint256,uint256,uint256)",
@@ -566,7 +566,7 @@ export class sOlympusERC20V3 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new sOlympusERC20V3__rebasesResult(
+      new sBlackDaoERC20V3__rebasesResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBigInt(),
@@ -1056,32 +1056,32 @@ export class SetIndexCall__Outputs {
   }
 }
 
-export class SetgOHMCall extends ethereum.Call {
-  get inputs(): SetgOHMCall__Inputs {
-    return new SetgOHMCall__Inputs(this);
+export class SetgBLKDCall extends ethereum.Call {
+  get inputs(): SetgBLKDCall__Inputs {
+    return new SetgBLKDCall__Inputs(this);
   }
 
-  get outputs(): SetgOHMCall__Outputs {
-    return new SetgOHMCall__Outputs(this);
+  get outputs(): SetgBLKDCall__Outputs {
+    return new SetgBLKDCall__Outputs(this);
   }
 }
 
-export class SetgOHMCall__Inputs {
-  _call: SetgOHMCall;
+export class SetgBLKDCall__Inputs {
+  _call: SetgBLKDCall;
 
-  constructor(call: SetgOHMCall) {
+  constructor(call: SetgBLKDCall) {
     this._call = call;
   }
 
-  get _gOHM(): Address {
+  get _gBLKD(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class SetgOHMCall__Outputs {
-  _call: SetgOHMCall;
+export class SetgBLKDCall__Outputs {
+  _call: SetgBLKDCall;
 
-  constructor(call: SetgOHMCall) {
+  constructor(call: SetgBLKDCall) {
     this._call = call;
   }
 }

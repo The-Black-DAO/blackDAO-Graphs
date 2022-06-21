@@ -27,6 +27,14 @@ type LogRebase @entity {
   index: BigInt! # uint256
 }
 
+type LogSupply @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt!
+  epoch: BigInt! # uint256
+  totalSupply: BigInt! # uint256
+}
+
 type LogStakingContractUpdated @entity {
   id: ID!
   transaction: Transaction!
@@ -109,10 +117,8 @@ type ProtocolMetric @entity {
   nextEpochRebase: BigDecimal!
   nextDistributedOhm: BigDecimal!
   treasuryDaiRiskFreeValue: BigDecimal!
-  treasuryFraxRiskFreeValue: BigDecimal!
   treasuryWETHRiskFreeValue: BigDecimal!
   treasuryDaiMarketValue: BigDecimal!
-  treasuryFraxMarketValue: BigDecimal!
   treasuryWETHMarketValue: BigDecimal!
   treasuryLPValue: BigDecimal!
   treasuryStableBacking: BigDecimal!
@@ -129,6 +135,5 @@ type ProtocolMetric @entity {
   runway100k: BigDecimal
   runwayCurrent: BigDecimal
   treasuryOhmDaiPOL: BigDecimal!
-  treasuryOhmFraxPOL: BigDecimal!
   treasuryOhmEthPOL: BigDecimal!
 }

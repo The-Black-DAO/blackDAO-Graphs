@@ -10,25 +10,21 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class OwnershipTransferred extends ethereum.Event {
-  get params(): OwnershipTransferred__Params {
-    return new OwnershipTransferred__Params(this);
+export class AuthorityUpdated extends ethereum.Event {
+  get params(): AuthorityUpdated__Params {
+    return new AuthorityUpdated__Params(this);
   }
 }
 
-export class OwnershipTransferred__Params {
-  _event: OwnershipTransferred;
+export class AuthorityUpdated__Params {
+  _event: AuthorityUpdated;
 
-  constructor(event: OwnershipTransferred) {
+  constructor(event: AuthorityUpdated) {
     this._event = event;
   }
 
-  get previousOwner(): Address {
+  get authority(): Address {
     return this._event.parameters[0].value.toAddress();
-  }
-
-  get newOwner(): Address {
-    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -74,21 +70,6 @@ export class Distributor extends ethereum.SmartContract {
     return new Distributor("Distributor", address);
   }
 
-  OHM(): Address {
-    let result = super.call("OHM", "OHM():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_OHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("OHM", "OHM():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   adjustments(param0: BigInt): Distributor__adjustmentsResult {
     let result = super.call(
       "adjustments",
@@ -124,29 +105,29 @@ export class Distributor extends ethereum.SmartContract {
     );
   }
 
-  distribute(): boolean {
-    let result = super.call("distribute", "distribute():(bool)", []);
+  authority(): Address {
+    let result = super.call("authority", "authority():(address)", []);
 
-    return result[0].toBoolean();
+    return result[0].toAddress();
   }
 
-  try_distribute(): ethereum.CallResult<boolean> {
-    let result = super.tryCall("distribute", "distribute():(bool)", []);
+  try_authority(): ethereum.CallResult<Address> {
+    let result = super.tryCall("authority", "authority():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  epochLength(): BigInt {
-    let result = super.call("epochLength", "epochLength():(uint256)", []);
+  bounty(): BigInt {
+    let result = super.call("bounty", "bounty():(uint256)", []);
 
     return result[0].toBigInt();
   }
 
-  try_epochLength(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("epochLength", "epochLength():(uint256)", []);
+  try_bounty(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("bounty", "bounty():(uint256)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -176,25 +157,6 @@ export class Distributor extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new Distributor__infoResult(value[0].toBigInt(), value[1].toAddress())
     );
-  }
-
-  nextEpochBlock(): BigInt {
-    let result = super.call("nextEpochBlock", "nextEpochBlock():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_nextEpochBlock(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "nextEpochBlock",
-      "nextEpochBlock():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   nextRewardAt(_rate: BigInt): BigInt {
@@ -241,34 +203,23 @@ export class Distributor extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  policy(): Address {
-    let result = super.call("policy", "policy():(address)", []);
+  retrieveBounty(): BigInt {
+    let result = super.call("retrieveBounty", "retrieveBounty():(uint256)", []);
 
-    return result[0].toAddress();
+    return result[0].toBigInt();
   }
 
-  try_policy(): ethereum.CallResult<Address> {
-    let result = super.tryCall("policy", "policy():(address)", []);
+  try_retrieveBounty(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "retrieveBounty",
+      "retrieveBounty():(uint256)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  treasury(): Address {
-    let result = super.call("treasury", "treasury():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_treasury(): ethereum.CallResult<Address> {
-    let result = super.tryCall("treasury", "treasury():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 }
 
@@ -293,16 +244,16 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _ohm(): Address {
+  get _blkd(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get _epochLength(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+  get _staking(): Address {
+    return this._call.inputValues[2].value.toAddress();
   }
 
-  get _nextEpochBlock(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+  get _authority(): Address {
+    return this._call.inputValues[3].value.toAddress();
   }
 }
 
@@ -372,66 +323,6 @@ export class DistributeCall__Outputs {
   constructor(call: DistributeCall) {
     this._call = call;
   }
-
-  get value0(): boolean {
-    return this._call.outputValues[0].value.toBoolean();
-  }
-}
-
-export class PullPolicyCall extends ethereum.Call {
-  get inputs(): PullPolicyCall__Inputs {
-    return new PullPolicyCall__Inputs(this);
-  }
-
-  get outputs(): PullPolicyCall__Outputs {
-    return new PullPolicyCall__Outputs(this);
-  }
-}
-
-export class PullPolicyCall__Inputs {
-  _call: PullPolicyCall;
-
-  constructor(call: PullPolicyCall) {
-    this._call = call;
-  }
-}
-
-export class PullPolicyCall__Outputs {
-  _call: PullPolicyCall;
-
-  constructor(call: PullPolicyCall) {
-    this._call = call;
-  }
-}
-
-export class PushPolicyCall extends ethereum.Call {
-  get inputs(): PushPolicyCall__Inputs {
-    return new PushPolicyCall__Inputs(this);
-  }
-
-  get outputs(): PushPolicyCall__Outputs {
-    return new PushPolicyCall__Outputs(this);
-  }
-}
-
-export class PushPolicyCall__Inputs {
-  _call: PushPolicyCall;
-
-  constructor(call: PushPolicyCall) {
-    this._call = call;
-  }
-
-  get newPolicy_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class PushPolicyCall__Outputs {
-  _call: PushPolicyCall;
-
-  constructor(call: PushPolicyCall) {
-    this._call = call;
-  }
 }
 
 export class RemoveRecipientCall extends ethereum.Call {
@@ -454,10 +345,6 @@ export class RemoveRecipientCall__Inputs {
   get _index(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
-
-  get _recipient(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
 }
 
 export class RemoveRecipientCall__Outputs {
@@ -468,29 +355,33 @@ export class RemoveRecipientCall__Outputs {
   }
 }
 
-export class RenouncePolicyCall extends ethereum.Call {
-  get inputs(): RenouncePolicyCall__Inputs {
-    return new RenouncePolicyCall__Inputs(this);
+export class RetrieveBountyCall extends ethereum.Call {
+  get inputs(): RetrieveBountyCall__Inputs {
+    return new RetrieveBountyCall__Inputs(this);
   }
 
-  get outputs(): RenouncePolicyCall__Outputs {
-    return new RenouncePolicyCall__Outputs(this);
+  get outputs(): RetrieveBountyCall__Outputs {
+    return new RetrieveBountyCall__Outputs(this);
   }
 }
 
-export class RenouncePolicyCall__Inputs {
-  _call: RenouncePolicyCall;
+export class RetrieveBountyCall__Inputs {
+  _call: RetrieveBountyCall;
 
-  constructor(call: RenouncePolicyCall) {
+  constructor(call: RetrieveBountyCall) {
     this._call = call;
   }
 }
 
-export class RenouncePolicyCall__Outputs {
-  _call: RenouncePolicyCall;
+export class RetrieveBountyCall__Outputs {
+  _call: RetrieveBountyCall;
 
-  constructor(call: RenouncePolicyCall) {
+  constructor(call: RetrieveBountyCall) {
     this._call = call;
+  }
+
+  get value0(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
@@ -532,6 +423,66 @@ export class SetAdjustmentCall__Outputs {
   _call: SetAdjustmentCall;
 
   constructor(call: SetAdjustmentCall) {
+    this._call = call;
+  }
+}
+
+export class SetAuthorityCall extends ethereum.Call {
+  get inputs(): SetAuthorityCall__Inputs {
+    return new SetAuthorityCall__Inputs(this);
+  }
+
+  get outputs(): SetAuthorityCall__Outputs {
+    return new SetAuthorityCall__Outputs(this);
+  }
+}
+
+export class SetAuthorityCall__Inputs {
+  _call: SetAuthorityCall;
+
+  constructor(call: SetAuthorityCall) {
+    this._call = call;
+  }
+
+  get _newAuthority(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetAuthorityCall__Outputs {
+  _call: SetAuthorityCall;
+
+  constructor(call: SetAuthorityCall) {
+    this._call = call;
+  }
+}
+
+export class SetBountyCall extends ethereum.Call {
+  get inputs(): SetBountyCall__Inputs {
+    return new SetBountyCall__Inputs(this);
+  }
+
+  get outputs(): SetBountyCall__Outputs {
+    return new SetBountyCall__Outputs(this);
+  }
+}
+
+export class SetBountyCall__Inputs {
+  _call: SetBountyCall;
+
+  constructor(call: SetBountyCall) {
+    this._call = call;
+  }
+
+  get _bounty(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetBountyCall__Outputs {
+  _call: SetBountyCall;
+
+  constructor(call: SetBountyCall) {
     this._call = call;
   }
 }

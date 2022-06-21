@@ -36,104 +36,20 @@ export class Approval__Params {
   }
 }
 
-export class OwnershipTransferred extends ethereum.Event {
-  get params(): OwnershipTransferred__Params {
-    return new OwnershipTransferred__Params(this);
+export class AuthorityUpdated extends ethereum.Event {
+  get params(): AuthorityUpdated__Params {
+    return new AuthorityUpdated__Params(this);
   }
 }
 
-export class OwnershipTransferred__Params {
-  _event: OwnershipTransferred;
+export class AuthorityUpdated__Params {
+  _event: AuthorityUpdated;
 
-  constructor(event: OwnershipTransferred) {
+  constructor(event: AuthorityUpdated) {
     this._event = event;
   }
 
-  get previousOwner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newOwner(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class TWAPEpochChanged extends ethereum.Event {
-  get params(): TWAPEpochChanged__Params {
-    return new TWAPEpochChanged__Params(this);
-  }
-}
-
-export class TWAPEpochChanged__Params {
-  _event: TWAPEpochChanged;
-
-  constructor(event: TWAPEpochChanged) {
-    this._event = event;
-  }
-
-  get previousTWAPEpochPeriod(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get newTWAPEpochPeriod(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-}
-
-export class TWAPOracleChanged extends ethereum.Event {
-  get params(): TWAPOracleChanged__Params {
-    return new TWAPOracleChanged__Params(this);
-  }
-}
-
-export class TWAPOracleChanged__Params {
-  _event: TWAPOracleChanged;
-
-  constructor(event: TWAPOracleChanged) {
-    this._event = event;
-  }
-
-  get previousTWAPOracle(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newTWAPOracle(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
-export class TWAPSourceAdded extends ethereum.Event {
-  get params(): TWAPSourceAdded__Params {
-    return new TWAPSourceAdded__Params(this);
-  }
-}
-
-export class TWAPSourceAdded__Params {
-  _event: TWAPSourceAdded;
-
-  constructor(event: TWAPSourceAdded) {
-    this._event = event;
-  }
-
-  get newTWAPSource(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
-export class TWAPSourceRemoved extends ethereum.Event {
-  get params(): TWAPSourceRemoved__Params {
-    return new TWAPSourceRemoved__Params(this);
-  }
-}
-
-export class TWAPSourceRemoved__Params {
-  _event: TWAPSourceRemoved;
-
-  constructor(event: TWAPSourceRemoved) {
-    this._event = event;
-  }
-
-  get removedTWAPSource(): Address {
+  get authority(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 }
@@ -164,9 +80,9 @@ export class Transfer__Params {
   }
 }
 
-export class OlympusERC20 extends ethereum.SmartContract {
-  static bind(address: Address): OlympusERC20 {
-    return new OlympusERC20("OlympusERC20", address);
+export class BlackDaoERC20 extends ethereum.SmartContract {
+  static bind(address: Address): BlackDaoERC20 {
+    return new BlackDaoERC20("BlackDaoERC20", address);
   }
 
   DOMAIN_SEPARATOR(): Bytes {
@@ -183,29 +99,6 @@ export class OlympusERC20 extends ethereum.SmartContract {
     let result = super.tryCall(
       "DOMAIN_SEPARATOR",
       "DOMAIN_SEPARATOR():(bytes32)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  PERMIT_TYPEHASH(): Bytes {
-    let result = super.call(
-      "PERMIT_TYPEHASH",
-      "PERMIT_TYPEHASH():(bytes32)",
-      []
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_PERMIT_TYPEHASH(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "PERMIT_TYPEHASH",
-      "PERMIT_TYPEHASH():(bytes32)",
       []
     );
     if (result.reverted) {
@@ -257,6 +150,21 @@ export class OlympusERC20 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  authority(): Address {
+    let result = super.call("authority", "authority():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_authority(): ethereum.CallResult<Address> {
+    let result = super.tryCall("authority", "authority():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   balanceOf(account: Address): BigInt {
@@ -391,40 +299,6 @@ export class OlympusERC20 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  owner(): Address {
-    let result = super.call("owner", "owner():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_owner(): ethereum.CallResult<Address> {
-    let result = super.tryCall("owner", "owner():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  setVault(vault_: Address): boolean {
-    let result = super.call("setVault", "setVault(address):(bool)", [
-      ethereum.Value.fromAddress(vault_)
-    ]);
-
-    return result[0].toBoolean();
-  }
-
-  try_setVault(vault_: Address): ethereum.CallResult<boolean> {
-    let result = super.tryCall("setVault", "setVault(address):(bool)", [
-      ethereum.Value.fromAddress(vault_)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
   symbol(): string {
     let result = super.call("symbol", "symbol():(string)", []);
 
@@ -513,59 +387,6 @@ export class OlympusERC20 extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
-
-  twapEpochPeriod(): BigInt {
-    let result = super.call(
-      "twapEpochPeriod",
-      "twapEpochPeriod():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_twapEpochPeriod(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "twapEpochPeriod",
-      "twapEpochPeriod():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  twapOracle(): Address {
-    let result = super.call("twapOracle", "twapOracle():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_twapOracle(): ethereum.CallResult<Address> {
-    let result = super.tryCall("twapOracle", "twapOracle():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  vault(): Address {
-    let result = super.call("vault", "vault():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_vault(): ethereum.CallResult<Address> {
-    let result = super.tryCall("vault", "vault():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
 }
 
 export class ConstructorCall extends ethereum.Call {
@@ -584,76 +405,16 @@ export class ConstructorCall__Inputs {
   constructor(call: ConstructorCall) {
     this._call = call;
   }
+
+  get _authority(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
 }
 
 export class ConstructorCall__Outputs {
   _call: ConstructorCall;
 
   constructor(call: ConstructorCall) {
-    this._call = call;
-  }
-}
-
-export class _burnFromCall extends ethereum.Call {
-  get inputs(): _burnFromCall__Inputs {
-    return new _burnFromCall__Inputs(this);
-  }
-
-  get outputs(): _burnFromCall__Outputs {
-    return new _burnFromCall__Outputs(this);
-  }
-}
-
-export class _burnFromCall__Inputs {
-  _call: _burnFromCall;
-
-  constructor(call: _burnFromCall) {
-    this._call = call;
-  }
-
-  get account_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get amount_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-}
-
-export class _burnFromCall__Outputs {
-  _call: _burnFromCall;
-
-  constructor(call: _burnFromCall) {
-    this._call = call;
-  }
-}
-
-export class AddTWAPSourceCall extends ethereum.Call {
-  get inputs(): AddTWAPSourceCall__Inputs {
-    return new AddTWAPSourceCall__Inputs(this);
-  }
-
-  get outputs(): AddTWAPSourceCall__Outputs {
-    return new AddTWAPSourceCall__Outputs(this);
-  }
-}
-
-export class AddTWAPSourceCall__Inputs {
-  _call: AddTWAPSourceCall;
-
-  constructor(call: AddTWAPSourceCall) {
-    this._call = call;
-  }
-
-  get newTWAPSourceDexPool_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class AddTWAPSourceCall__Outputs {
-  _call: AddTWAPSourceCall;
-
-  constructor(call: AddTWAPSourceCall) {
     this._call = call;
   }
 }
@@ -756,66 +517,6 @@ export class BurnFromCall__Outputs {
   _call: BurnFromCall;
 
   constructor(call: BurnFromCall) {
-    this._call = call;
-  }
-}
-
-export class ChangeTWAPEpochPeriodCall extends ethereum.Call {
-  get inputs(): ChangeTWAPEpochPeriodCall__Inputs {
-    return new ChangeTWAPEpochPeriodCall__Inputs(this);
-  }
-
-  get outputs(): ChangeTWAPEpochPeriodCall__Outputs {
-    return new ChangeTWAPEpochPeriodCall__Outputs(this);
-  }
-}
-
-export class ChangeTWAPEpochPeriodCall__Inputs {
-  _call: ChangeTWAPEpochPeriodCall;
-
-  constructor(call: ChangeTWAPEpochPeriodCall) {
-    this._call = call;
-  }
-
-  get newTWAPEpochPeriod_(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class ChangeTWAPEpochPeriodCall__Outputs {
-  _call: ChangeTWAPEpochPeriodCall;
-
-  constructor(call: ChangeTWAPEpochPeriodCall) {
-    this._call = call;
-  }
-}
-
-export class ChangeTWAPOracleCall extends ethereum.Call {
-  get inputs(): ChangeTWAPOracleCall__Inputs {
-    return new ChangeTWAPOracleCall__Inputs(this);
-  }
-
-  get outputs(): ChangeTWAPOracleCall__Outputs {
-    return new ChangeTWAPOracleCall__Outputs(this);
-  }
-}
-
-export class ChangeTWAPOracleCall__Inputs {
-  _call: ChangeTWAPOracleCall;
-
-  constructor(call: ChangeTWAPOracleCall) {
-    this._call = call;
-  }
-
-  get newTWAPOracle_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class ChangeTWAPOracleCall__Outputs {
-  _call: ChangeTWAPOracleCall;
-
-  constructor(call: ChangeTWAPOracleCall) {
     this._call = call;
   }
 }
@@ -955,7 +656,7 @@ export class PermitCall__Inputs {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get amount(): BigInt {
+  get value(): BigInt {
     return this._call.inputValues[2].value.toBigInt();
   }
 
@@ -984,93 +685,33 @@ export class PermitCall__Outputs {
   }
 }
 
-export class RemoveTWAPSourceCall extends ethereum.Call {
-  get inputs(): RemoveTWAPSourceCall__Inputs {
-    return new RemoveTWAPSourceCall__Inputs(this);
+export class SetAuthorityCall extends ethereum.Call {
+  get inputs(): SetAuthorityCall__Inputs {
+    return new SetAuthorityCall__Inputs(this);
   }
 
-  get outputs(): RemoveTWAPSourceCall__Outputs {
-    return new RemoveTWAPSourceCall__Outputs(this);
+  get outputs(): SetAuthorityCall__Outputs {
+    return new SetAuthorityCall__Outputs(this);
   }
 }
 
-export class RemoveTWAPSourceCall__Inputs {
-  _call: RemoveTWAPSourceCall;
+export class SetAuthorityCall__Inputs {
+  _call: SetAuthorityCall;
 
-  constructor(call: RemoveTWAPSourceCall) {
+  constructor(call: SetAuthorityCall) {
     this._call = call;
   }
 
-  get twapSourceToRemove_(): Address {
+  get _newAuthority(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class RemoveTWAPSourceCall__Outputs {
-  _call: RemoveTWAPSourceCall;
+export class SetAuthorityCall__Outputs {
+  _call: SetAuthorityCall;
 
-  constructor(call: RemoveTWAPSourceCall) {
+  constructor(call: SetAuthorityCall) {
     this._call = call;
-  }
-}
-
-export class RenounceOwnershipCall extends ethereum.Call {
-  get inputs(): RenounceOwnershipCall__Inputs {
-    return new RenounceOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): RenounceOwnershipCall__Outputs {
-    return new RenounceOwnershipCall__Outputs(this);
-  }
-}
-
-export class RenounceOwnershipCall__Inputs {
-  _call: RenounceOwnershipCall;
-
-  constructor(call: RenounceOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class RenounceOwnershipCall__Outputs {
-  _call: RenounceOwnershipCall;
-
-  constructor(call: RenounceOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class SetVaultCall extends ethereum.Call {
-  get inputs(): SetVaultCall__Inputs {
-    return new SetVaultCall__Inputs(this);
-  }
-
-  get outputs(): SetVaultCall__Outputs {
-    return new SetVaultCall__Outputs(this);
-  }
-}
-
-export class SetVaultCall__Inputs {
-  _call: SetVaultCall;
-
-  constructor(call: SetVaultCall) {
-    this._call = call;
-  }
-
-  get vault_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetVaultCall__Outputs {
-  _call: SetVaultCall;
-
-  constructor(call: SetVaultCall) {
-    this._call = call;
-  }
-
-  get value0(): boolean {
-    return this._call.outputValues[0].value.toBoolean();
   }
 }
 
@@ -1151,35 +792,5 @@ export class TransferFromCall__Outputs {
 
   get value0(): boolean {
     return this._call.outputValues[0].value.toBoolean();
-  }
-}
-
-export class TransferOwnershipCall extends ethereum.Call {
-  get inputs(): TransferOwnershipCall__Inputs {
-    return new TransferOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): TransferOwnershipCall__Outputs {
-    return new TransferOwnershipCall__Outputs(this);
-  }
-}
-
-export class TransferOwnershipCall__Inputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
-    this._call = call;
-  }
-
-  get newOwner_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class TransferOwnershipCall__Outputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
-    this._call = call;
   }
 }

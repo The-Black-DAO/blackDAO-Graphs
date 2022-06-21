@@ -1,6 +1,12 @@
 [
     {
-        "inputs": [],
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_authority",
+                "type": "address"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "constructor"
     },
@@ -33,51 +39,13 @@
         "anonymous": false,
         "inputs": [
             {
-                "indexed": false,
-                "internalType": "address",
-                "name": "monetaryPolicy",
+                "indexed": true,
+                "internalType": "contract IBlackDAOAuthority",
+                "name": "authority",
                 "type": "address"
             }
         ],
-        "name": "LogMonetaryPolicyUpdated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "epoch",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "totalSupply",
-                "type": "uint256"
-            }
-        ],
-        "name": "LogRebase",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "previousOwner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "OwnershipTransferred",
+        "name": "AuthorityUpdated",
         "type": "event"
     },
     {
@@ -119,23 +87,10 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "PERMIT_TYPEHASH",
-        "outputs": [
-            {
-                "internalType": "bytes32",
-                "name": "",
-                "type": "bytes32"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "address",
-                "name": "owner_",
+                "name": "owner",
                 "type": "address"
             },
             {
@@ -164,7 +119,7 @@
             },
             {
                 "internalType": "uint256",
-                "name": "value",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
@@ -180,10 +135,23 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "authority",
+        "outputs": [
+            {
+                "internalType": "contract IBlackDAOAuthority",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
-                "name": "who",
+                "name": "account",
                 "type": "address"
             }
         ],
@@ -199,16 +167,34 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "circulatingSupply",
-        "outputs": [
+        "inputs": [
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
-        "stateMutability": "view",
+        "name": "burn",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount_",
+                "type": "uint256"
+            }
+        ],
+        "name": "burnFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -273,16 +259,21 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "monetaryPolicy",
-        "outputs": [
+        "inputs": [
             {
                 "internalType": "address",
-                "name": "",
+                "name": "account_",
                 "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount_",
+                "type": "uint256"
             }
         ],
-        "stateMutability": "view",
+        "name": "mint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -318,19 +309,6 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "address",
@@ -344,7 +322,7 @@
             },
             {
                 "internalType": "uint256",
-                "name": "amount",
+                "name": "value",
                 "type": "uint256"
             },
             {
@@ -376,66 +354,14 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
-                "name": "olyProfit",
-                "type": "uint256"
-            }
-        ],
-        "name": "rebase",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "monetaryPolicy_",
+                "internalType": "contract IBlackDAOAuthority",
+                "name": "_newAuthority",
                 "type": "address"
             }
         ],
-        "name": "setMonetaryPolicy",
+        "name": "setAuthority",
         "outputs": [],
         "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "newStakingContract_",
-                "type": "address"
-            }
-        ],
-        "name": "setStakingContract",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "stakingContract",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -468,12 +394,12 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "to",
+                "name": "recipient",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "value",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
@@ -492,17 +418,17 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "from",
+                "name": "sender",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "to",
+                "name": "recipient",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "value",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
@@ -514,19 +440,6 @@
                 "type": "bool"
             }
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "newOwner_",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     }

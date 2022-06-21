@@ -15,21 +15,6 @@ export class BondingCalculator extends ethereum.SmartContract {
     return new BondingCalculator("BondingCalculator", address);
   }
 
-  OHM(): Address {
-    let result = super.call("OHM", "OHM():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_OHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("OHM", "OHM():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   getKValue(_pair: Address): BigInt {
     let result = super.call("getKValue", "getKValue(address):(uint256)", [
       ethereum.Value.fromAddress(_pair)
@@ -138,7 +123,7 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _OHM(): Address {
+  get _BLKD(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }

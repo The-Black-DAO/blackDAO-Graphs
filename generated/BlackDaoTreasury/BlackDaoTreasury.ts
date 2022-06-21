@@ -254,7 +254,7 @@ export class Withdrawal__Params {
   }
 }
 
-export class OlympusTreasury__indexInRegistryResult {
+export class BlackDaoTreasury__indexInRegistryResult {
   value0: boolean;
   value1: BigInt;
 
@@ -271,7 +271,7 @@ export class OlympusTreasury__indexInRegistryResult {
   }
 }
 
-export class OlympusTreasury__permissionQueueResult {
+export class BlackDaoTreasury__permissionQueueResult {
   value0: i32;
   value1: Address;
   value2: Address;
@@ -310,19 +310,19 @@ export class OlympusTreasury__permissionQueueResult {
   }
 }
 
-export class OlympusTreasury extends ethereum.SmartContract {
-  static bind(address: Address): OlympusTreasury {
-    return new OlympusTreasury("OlympusTreasury", address);
+export class BlackDaoTreasury extends ethereum.SmartContract {
+  static bind(address: Address): BlackDaoTreasury {
+    return new BlackDaoTreasury("BlackDaoTreasury", address);
   }
 
-  OHM(): Address {
-    let result = super.call("OHM", "OHM():(address)", []);
+  BLKD(): Address {
+    let result = super.call("BLKD", "BLKD():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_OHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("OHM", "OHM():(address)", []);
+  try_BLKD(): ethereum.CallResult<Address> {
+    let result = super.tryCall("BLKD", "BLKD():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -353,6 +353,21 @@ export class OlympusTreasury extends ethereum.SmartContract {
 
   try_baseSupply(): ethereum.CallResult<BigInt> {
     let result = super.tryCall("baseSupply", "baseSupply():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  blkdDebt(): BigInt {
+    let result = super.call("blkdDebt", "blkdDebt():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_blkdDebt(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("blkdDebt", "blkdDebt():(uint256)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -482,7 +497,7 @@ export class OlympusTreasury extends ethereum.SmartContract {
   indexInRegistry(
     _address: Address,
     _status: i32
-  ): OlympusTreasury__indexInRegistryResult {
+  ): BlackDaoTreasury__indexInRegistryResult {
     let result = super.call(
       "indexInRegistry",
       "indexInRegistry(address,uint8):(bool,uint256)",
@@ -492,7 +507,7 @@ export class OlympusTreasury extends ethereum.SmartContract {
       ]
     );
 
-    return new OlympusTreasury__indexInRegistryResult(
+    return new BlackDaoTreasury__indexInRegistryResult(
       result[0].toBoolean(),
       result[1].toBigInt()
     );
@@ -501,7 +516,7 @@ export class OlympusTreasury extends ethereum.SmartContract {
   try_indexInRegistry(
     _address: Address,
     _status: i32
-  ): ethereum.CallResult<OlympusTreasury__indexInRegistryResult> {
+  ): ethereum.CallResult<BlackDaoTreasury__indexInRegistryResult> {
     let result = super.tryCall(
       "indexInRegistry",
       "indexInRegistry(address,uint8):(bool,uint256)",
@@ -515,7 +530,7 @@ export class OlympusTreasury extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new OlympusTreasury__indexInRegistryResult(
+      new BlackDaoTreasury__indexInRegistryResult(
         value[0].toBoolean(),
         value[1].toBigInt()
       )
@@ -535,21 +550,6 @@ export class OlympusTreasury extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  ohmDebt(): BigInt {
-    let result = super.call("ohmDebt", "ohmDebt():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_ohmDebt(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("ohmDebt", "ohmDebt():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   onChainGovernanceTimelock(): BigInt {
@@ -575,14 +575,14 @@ export class OlympusTreasury extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  permissionQueue(param0: BigInt): OlympusTreasury__permissionQueueResult {
+  permissionQueue(param0: BigInt): BlackDaoTreasury__permissionQueueResult {
     let result = super.call(
       "permissionQueue",
       "permissionQueue(uint256):(uint8,address,address,uint256,bool,bool)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
-    return new OlympusTreasury__permissionQueueResult(
+    return new BlackDaoTreasury__permissionQueueResult(
       result[0].toI32(),
       result[1].toAddress(),
       result[2].toAddress(),
@@ -594,7 +594,7 @@ export class OlympusTreasury extends ethereum.SmartContract {
 
   try_permissionQueue(
     param0: BigInt
-  ): ethereum.CallResult<OlympusTreasury__permissionQueueResult> {
+  ): ethereum.CallResult<BlackDaoTreasury__permissionQueueResult> {
     let result = super.tryCall(
       "permissionQueue",
       "permissionQueue(uint256):(uint8,address,address,uint256,bool,bool)",
@@ -605,7 +605,7 @@ export class OlympusTreasury extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new OlympusTreasury__permissionQueueResult(
+      new BlackDaoTreasury__permissionQueueResult(
         value[0].toI32(),
         value[1].toAddress(),
         value[2].toAddress(),
@@ -670,14 +670,14 @@ export class OlympusTreasury extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  sOHM(): Address {
-    let result = super.call("sOHM", "sOHM():(address)", []);
+  sBLKD(): Address {
+    let result = super.call("sBLKD", "sBLKD():(address)", []);
 
     return result[0].toAddress();
   }
 
-  try_sOHM(): ethereum.CallResult<Address> {
-    let result = super.tryCall("sOHM", "sOHM():(address)", []);
+  try_sBLKD(): ethereum.CallResult<Address> {
+    let result = super.tryCall("sBLKD", "sBLKD():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -788,7 +788,7 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _ohm(): Address {
+  get _blkd(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
@@ -1201,20 +1201,20 @@ export class QueueTimelockCall__Outputs {
   }
 }
 
-export class RepayDebtWithOHMCall extends ethereum.Call {
-  get inputs(): RepayDebtWithOHMCall__Inputs {
-    return new RepayDebtWithOHMCall__Inputs(this);
+export class RepayDebtWithBLKDCall extends ethereum.Call {
+  get inputs(): RepayDebtWithBLKDCall__Inputs {
+    return new RepayDebtWithBLKDCall__Inputs(this);
   }
 
-  get outputs(): RepayDebtWithOHMCall__Outputs {
-    return new RepayDebtWithOHMCall__Outputs(this);
+  get outputs(): RepayDebtWithBLKDCall__Outputs {
+    return new RepayDebtWithBLKDCall__Outputs(this);
   }
 }
 
-export class RepayDebtWithOHMCall__Inputs {
-  _call: RepayDebtWithOHMCall;
+export class RepayDebtWithBLKDCall__Inputs {
+  _call: RepayDebtWithBLKDCall;
 
-  constructor(call: RepayDebtWithOHMCall) {
+  constructor(call: RepayDebtWithBLKDCall) {
     this._call = call;
   }
 
@@ -1223,10 +1223,10 @@ export class RepayDebtWithOHMCall__Inputs {
   }
 }
 
-export class RepayDebtWithOHMCall__Outputs {
-  _call: RepayDebtWithOHMCall;
+export class RepayDebtWithBLKDCall__Outputs {
+  _call: RepayDebtWithBLKDCall;
 
-  constructor(call: RepayDebtWithOHMCall) {
+  constructor(call: RepayDebtWithBLKDCall) {
     this._call = call;
   }
 }

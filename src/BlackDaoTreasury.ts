@@ -4,7 +4,7 @@ import {
   RepayDebt as RepayDebtEvent,
   ReservesAudited as ReservesAuditedEvent,
   Withdrawal as WithdrawalEvent,
-} from '../generated/OlympusTreasury/OlympusTreasury'
+} from '../generated/BlackDaoTreasury/BlackDaoTreasury'
 import {
   CreateDebt,
   Deposit,

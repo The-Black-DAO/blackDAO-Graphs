@@ -3,12 +3,12 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: sOlympusERC20V3
-    network: matic
+    name: sBlackDaoERC20V3
+    network: mainnet
     source:
-      address: '0xe3CDAB60de5522CF016fA8C8d03a32CCBc636bAf'
-      abi: sOlympusERC20V3
-      startBlock: 25303276
+      address: '0x76B7B4062d7b518C79f324b6F1f9Cc4E10ABD27F'
+      abi: sBlackDaoERC20V3
+      startBlock: 14978395
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -18,28 +18,23 @@ dataSources:
         - ProtocolMetric
         - Approval
         - LogRebase
+        - LogSupply
         - LogStakingContractUpdated
         - Transfer
       abis:
-        - name: sOlympusERC20V3
-          file: ./abis/sOlympusERC20V3.json
+        - name: sBlackDaoERC20V3
+          file: ./abis/sBlackDaoERC20V3.json
         # -- ProtocolMetric --
-        - name: OlympusStakingV3
-          file: ./abis/OlympusStakingV3.json
-        - name: OlympusERC20
-          file: ./abis/OlympusERC20.json
+        - name: BlackDaoStakingV3
+          file: ./abis/BlackDaoStakingV3.json
+        - name: BlackDaoERC20
+          file: ./abis/BlackDaoERC20.json
         - name: UniswapV2Pair
           file: ./abis/UniswapV2Pair.json
-        - name: UniswapV3Pair
-          file: ./abis/UniswapV3Pair.json
-        - name: CirculatingSupply
-          file: ./abis/CirculatingSupply.json
         - name: BondingCalculator
           file: ./abis/BondingCalculator.json
         - name: ERC20
           file: ./abis/ERC20.json
-        - name: MasterChef
-          file: ./abis/MasterChef.json
         - name: Distributor
           file: ./abis/Distributor.json
         # --------------------
@@ -48,19 +43,21 @@ dataSources:
           handler: handleApproval
         - event: LogRebase(indexed uint256,uint256,uint256)
           handler: handleLogRebase
+        - event: LogSupply(indexed uint256,uint256)
+          handler: handleLogSupply
         - event: LogStakingContractUpdated(address)
           handler: handleLogStakingContractUpdated
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/sOlympusERC20V3.ts
+      file: ./src/sBlackDaoERC20V3.ts
 ######################################################
   - kind: ethereum/contract
-    name: OlympusTreasury
-    network: matic
+    name: BlackDaoTreasury
+    network: mainnet
     source:
-      address: '0x6DE53D1e3553037587F4e1889Fde6371Cf913342'
-      abi: OlympusTreasury
-      startBlock: 25303276
+      address: '0xD088F31a21252308640CF9B6E70a13A7D79A56Ee'
+      abi: BlackDaoTreasury
+      startBlock: 14979028
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -74,25 +71,19 @@ dataSources:
         - ReservesAudited
         - Withdrawal
       abis:
-        - name: OlympusTreasury
-          file: ./abis/OlympusTreasury.json
+        - name: BlackDaoTreasury
+          file: ./abis/BlackDaoTreasury.json
         # -- ProtocolMetric --
-        - name: sOlympusERC20V3
-          file: ./abis/sOlympusERC20V3.json
-        - name: OlympusERC20
-          file: ./abis/OlympusERC20.json
+        - name: sBlackDaoERC20V3
+          file: ./abis/sBlackDaoERC20V3.json
+        - name: BlackDaoERC20
+          file: ./abis/BlackDaoERC20.json
         - name: UniswapV2Pair
           file: ./abis/UniswapV2Pair.json
-        - name: UniswapV3Pair
-          file: ./abis/UniswapV3Pair.json
-        - name: CirculatingSupply
-          file: ./abis/CirculatingSupply.json
         - name: BondingCalculator
           file: ./abis/BondingCalculator.json
         - name: ERC20
           file: ./abis/ERC20.json
-        - name: MasterChef
-          file: ./abis/MasterChef.json
         - name: Distributor
           file: ./abis/Distributor.json
         # --------------------
@@ -107,4 +98,4 @@ dataSources:
           handler: handleReservesAudited
         - event: Withdrawal(indexed address,uint256,uint256)
           handler: handleWithdrawal
-      file: ./src/OlympusTreasury.ts
+      file: ./src/BlackDaoTreasury.ts

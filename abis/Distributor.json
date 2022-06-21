@@ -8,18 +8,18 @@
             },
             {
                 "internalType": "address",
-                "name": "_ohm",
+                "name": "_blkd",
                 "type": "address"
             },
             {
-                "internalType": "uint256",
-                "name": "_epochLength",
-                "type": "uint256"
+                "internalType": "address",
+                "name": "_staking",
+                "type": "address"
             },
             {
-                "internalType": "uint256",
-                "name": "_nextEpochBlock",
-                "type": "uint256"
+                "internalType": "address",
+                "name": "_authority",
+                "type": "address"
             }
         ],
         "stateMutability": "nonpayable",
@@ -30,32 +30,13 @@
         "inputs": [
             {
                 "indexed": true,
-                "internalType": "address",
-                "name": "previousOwner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newOwner",
+                "internalType": "contract IBlackDAOAuthority",
+                "name": "authority",
                 "type": "address"
             }
         ],
-        "name": "OwnershipTransferred",
+        "name": "AuthorityUpdated",
         "type": "event"
-    },
-    {
-        "inputs": [],
-        "name": "OHM",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
     },
     {
         "inputs": [
@@ -106,20 +87,20 @@
     },
     {
         "inputs": [],
-        "name": "distribute",
+        "name": "authority",
         "outputs": [
             {
-                "internalType": "bool",
+                "internalType": "contract IBlackDAOAuthority",
                 "name": "",
-                "type": "bool"
+                "type": "address"
             }
         ],
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
     },
     {
         "inputs": [],
-        "name": "epochLength",
+        "name": "bounty",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -128,6 +109,13 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "distribute",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -149,19 +137,6 @@
                 "internalType": "address",
                 "name": "recipient",
                 "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "nextEpochBlock",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -206,49 +181,11 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "policy",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "pullPolicy",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "newPolicy_",
-                "type": "address"
-            }
-        ],
-        "name": "pushPolicy",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "uint256",
                 "name": "_index",
                 "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_recipient",
-                "type": "address"
             }
         ],
         "name": "removeRecipient",
@@ -258,8 +195,14 @@
     },
     {
         "inputs": [],
-        "name": "renouncePolicy",
-        "outputs": [],
+        "name": "retrieveBounty",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -292,16 +235,29 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "treasury",
-        "outputs": [
+        "inputs": [
             {
-                "internalType": "address",
-                "name": "",
+                "internalType": "contract IBlackDAOAuthority",
+                "name": "_newAuthority",
                 "type": "address"
             }
         ],
-        "stateMutability": "view",
+        "name": "setAuthority",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_bounty",
+                "type": "uint256"
+            }
+        ],
+        "name": "setBounty",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]

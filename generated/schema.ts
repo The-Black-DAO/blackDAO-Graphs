@@ -15,13 +15,6 @@ export class Transaction extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
-    this.set("blockHash", Value.fromBytes(Bytes.empty()));
-    this.set("from", Value.fromBytes(Bytes.empty()));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
-    this.set("gasPrice", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -126,12 +119,6 @@ export class Approval extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("owner", Value.fromBytes(Bytes.empty()));
-    this.set("spender", Value.fromBytes(Bytes.empty()));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -210,12 +197,6 @@ export class LogRebase extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("epoch", Value.fromBigInt(BigInt.zero()));
-    this.set("rebase", Value.fromBigInt(BigInt.zero()));
-    this.set("index", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -290,14 +271,79 @@ export class LogRebase extends Entity {
   }
 }
 
+export class LogSupply extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save LogSupply entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save LogSupply entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("LogSupply", id.toString(), this);
+    }
+  }
+
+  static load(id: string): LogSupply | null {
+    return changetype<LogSupply | null>(store.get("LogSupply", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get transaction(): string {
+    let value = this.get("transaction");
+    return value!.toString();
+  }
+
+  set transaction(value: string) {
+    this.set("transaction", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get epoch(): BigInt {
+    let value = this.get("epoch");
+    return value!.toBigInt();
+  }
+
+  set epoch(value: BigInt) {
+    this.set("epoch", Value.fromBigInt(value));
+  }
+
+  get totalSupply(): BigInt {
+    let value = this.get("totalSupply");
+    return value!.toBigInt();
+  }
+
+  set totalSupply(value: BigInt) {
+    this.set("totalSupply", Value.fromBigInt(value));
+  }
+}
+
 export class LogStakingContractUpdated extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("stakingContract", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -363,12 +409,6 @@ export class Transfer extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("from", Value.fromBytes(Bytes.empty()));
-    this.set("to", Value.fromBytes(Bytes.empty()));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -447,13 +487,6 @@ export class CreateDebt extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("debtor", Value.fromBytes(Bytes.empty()));
-    this.set("token", Value.fromBytes(Bytes.empty()));
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -541,12 +574,6 @@ export class Deposit extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("token", Value.fromBytes(Bytes.empty()));
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -625,13 +652,6 @@ export class RepayDebt extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("debtor", Value.fromBytes(Bytes.empty()));
-    this.set("token", Value.fromBytes(Bytes.empty()));
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -719,10 +739,6 @@ export class ReservesAudited extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("totalReserves", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -783,12 +799,6 @@ export class Withdrawal extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("transaction", Value.fromString(""));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("token", Value.fromBytes(Bytes.empty()));
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
-    this.set("value", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -867,10 +877,6 @@ export class DailyStakingReward extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
   }
 
   save(): void {
@@ -933,50 +939,6 @@ export class ProtocolMetric extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("ohmCirculatingSupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("sOhmCirculatingSupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("totalSupply", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("ohmPrice", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("marketCap", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("totalValueLocked", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryRiskFreeValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryMarketValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("nextEpochRebase", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("nextDistributedOhm", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set(
-      "treasuryDaiRiskFreeValue",
-      Value.fromBigDecimal(BigDecimal.zero())
-    );
-    this.set(
-      "treasuryFraxRiskFreeValue",
-      Value.fromBigDecimal(BigDecimal.zero())
-    );
-    this.set(
-      "treasuryWETHRiskFreeValue",
-      Value.fromBigDecimal(BigDecimal.zero())
-    );
-    this.set("treasuryDaiMarketValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set(
-      "treasuryFraxMarketValue",
-      Value.fromBigDecimal(BigDecimal.zero())
-    );
-    this.set(
-      "treasuryWETHMarketValue",
-      Value.fromBigDecimal(BigDecimal.zero())
-    );
-    this.set("treasuryLPValue", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryStableBacking", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set(
-      "treasuryVolatileBacking",
-      Value.fromBigDecimal(BigDecimal.zero())
-    );
-    this.set("treasuryTotalBacking", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("currentAPY", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryOhmDaiPOL", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryOhmFraxPOL", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("treasuryOhmEthPOL", Value.fromBigDecimal(BigDecimal.zero()));
   }
 
   save(): void {
@@ -1113,15 +1075,6 @@ export class ProtocolMetric extends Entity {
     this.set("treasuryDaiRiskFreeValue", Value.fromBigDecimal(value));
   }
 
-  get treasuryFraxRiskFreeValue(): BigDecimal {
-    let value = this.get("treasuryFraxRiskFreeValue");
-    return value!.toBigDecimal();
-  }
-
-  set treasuryFraxRiskFreeValue(value: BigDecimal) {
-    this.set("treasuryFraxRiskFreeValue", Value.fromBigDecimal(value));
-  }
-
   get treasuryWETHRiskFreeValue(): BigDecimal {
     let value = this.get("treasuryWETHRiskFreeValue");
     return value!.toBigDecimal();
@@ -1138,15 +1091,6 @@ export class ProtocolMetric extends Entity {
 
   set treasuryDaiMarketValue(value: BigDecimal) {
     this.set("treasuryDaiMarketValue", Value.fromBigDecimal(value));
-  }
-
-  get treasuryFraxMarketValue(): BigDecimal {
-    let value = this.get("treasuryFraxMarketValue");
-    return value!.toBigDecimal();
-  }
-
-  set treasuryFraxMarketValue(value: BigDecimal) {
-    this.set("treasuryFraxMarketValue", Value.fromBigDecimal(value));
   }
 
   get treasuryWETHMarketValue(): BigDecimal {
@@ -1363,15 +1307,6 @@ export class ProtocolMetric extends Entity {
 
   set treasuryOhmDaiPOL(value: BigDecimal) {
     this.set("treasuryOhmDaiPOL", Value.fromBigDecimal(value));
-  }
-
-  get treasuryOhmFraxPOL(): BigDecimal {
-    let value = this.get("treasuryOhmFraxPOL");
-    return value!.toBigDecimal();
-  }
-
-  set treasuryOhmFraxPOL(value: BigDecimal) {
-    this.set("treasuryOhmFraxPOL", Value.fromBigDecimal(value));
   }
 
   get treasuryOhmEthPOL(): BigDecimal {
